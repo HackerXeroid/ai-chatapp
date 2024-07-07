@@ -1,35 +1,51 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+/*
+initiates a conversation about booking a resort room ->
+bot fetches room options from an API and responds with a list of room options ->
+The user selects a room ->
+The bot provides pricing information ->
+The user confirms they want to proceed with booking ->
+The bot makes a simulated API call to book the room and returns a booking confirmation with a booking ID.
+*/
 
+import { useState } from "react";
+import AppLayout from "./components/AppLayout";
+import { v4 as uuidv4 } from "uuid";
+
+/*
+  {
+    id: uuidv4(),
+    message: "Hi, I'm a user. Help me",
+    sender: "user",
+  },
+
+  Conversation Message
+*/
+
+let first_id = uuidv4();
 function App() {
-  const [count, setCount] = useState(0)
+  const [allChats, setAllChats] = useState({
+    [first_id]: {
+      id: first_id,
+      name: "Chat 1",
+      conversation: [],
+    },
+  });
+
+  const [activeChatId, setActiveChatId] = useState(null);
+
+  const updateAllChats = (newChats) => {
+    setAllChats(newChats);
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="h-screen">
+      <AppLayout
+        allChats={allChats}
+        activeChatId={activeChatId}
+        setActiveChatId={setActiveChatId}
+        updateAllChats={setAllChats}
+      />
+    </div>
+  );
 }
-
-export default App
+export default App;
